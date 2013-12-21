@@ -78,6 +78,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	private String localName = null;
 	private int phone_id = 20;
 	private String[] weekSet = null;
+	private Integer pic_width = 1000;
 
 	private Integer beginHour = 7;
 	private Integer beginMinute = 30;
@@ -172,6 +173,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
 		mbUiThreadHandler.postDelayed(mUpdateConfig, 10);
 		//getSettings();
+		try{
+			throw new Exception("我起来了");
+		} catch (Exception e) {
+			ACRA.getErrorReporter().handleSilentException(e);
+		}
 
 	}
 
@@ -217,6 +223,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			Log.v("endHour", "" + endHour);
 			Log.v("endMinute", "" + endMinute);
 			Log.v("shotFreq", "" + shotFreq);
+			Log.v("pic_width", "" + pic_width);
 			if((weekSet == null)||(weekSet.length != 7))
 			{
 				Log.v("weekSet","null");
@@ -334,6 +341,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 				beginMinute = json.getInt(beginMinuteKey);
 				endHour = json.getInt(endHourKey);
 				endMinute = json.getInt(endMinuteKey);
+				pic_width = json.getInt("pic_width");
 				newNetConfigVersion = json.getLong(netConfigVersionKey);
 			}
 
@@ -453,7 +461,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		public void onPictureTaken(byte[] data, Camera camera) {
 			// TODO Auto-generated method stub
 			Log.i("yan:", "onPictureTaken........");
-
+			sendbytes = data.length;
 			String filename = System.currentTimeMillis() + ".jpg";
 			System.out.println("onPictureTaken");
 			File jpgFile = new File(Environment.getExternalStorageDirectory()
@@ -726,7 +734,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
 							final long bs = bytes;
 							final long tl = total;
-							sendbytes += bytes;
+							//sendbytes += bytes;
 
 							mbUiThreadHandler.post(new Runnable() {
 								public void run() {
@@ -873,7 +881,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	                Iterator<Camera.Size> itor = sizeList.iterator(); 
 	                while(itor.hasNext()){ 
 	                    Camera.Size cur = itor.next(); 
-	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <2000 && cur.height < 2000){ 
+	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <pic_width && cur.height < pic_width){ 
 	                        bestWidth = cur.width; 
 	                        bestHeight = cur.height; 
 	                    } 
@@ -898,7 +906,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	                Iterator<Camera.Size> itor = sizeList.iterator(); 
 	                while(itor.hasNext()){ 
 	                    Camera.Size cur = itor.next(); 
-	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <2000 && cur.height < 2000){ 
+	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <pic_width && cur.height < pic_width){ 
 	                        bestWidth = cur.width; 
 	                        bestHeight = cur.height; 
 	                    } 
