@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings" >
+
+    <PreferenceCategory android:title="@string/photo_param" >
+        
+        <EditTextPreference android:key="@string/net_config_key" android:defaultValue="@string/net_config_default_value" android:title="@string/net_config_tittle" android:summary="@string/net_config_summary"/>
+        <ListPreference android:title="@string/phone_id_tittle" android:entryValues="@array/phone_id__value" android:dialogTitle="@string/phone_id_tittle" android:defaultValue="@string/phone_id_default_value" android:summary="@string/phone_id_summary" android:key="@string/phone_id_key" android:entries="@array/phone_id_entry"/>
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>

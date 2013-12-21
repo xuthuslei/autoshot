@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    
+    <CheckBox
+        android:id="@+id/checkBox_week_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期一" />
+
+    <CheckBox
+        android:id="@+id/checkBox_week_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期二" />
+	</LinearLayout>
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    <CheckBox
+        android:id="@+id/checkBox_week_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期三" />
+
+    <CheckBox
+        android:id="@+id/checkBox_week_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期四" />
+</LinearLayout>
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    <CheckBox
+        android:id="@+id/checkBox_week_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期五" />
+
+    <CheckBox
+        android:id="@+id/checkBox_week_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期六" />
+</LinearLayout>
+    <CheckBox
+        android:id="@+id/checkBox_week_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期日" />
+
+</LinearLayout>

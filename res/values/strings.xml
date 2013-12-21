@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">自动拍照</string>
+	<string name="action_settings">Settings</string>
+	<string name="hello_world">Hello world!</string>
+    <string name="settings">设置</string>
+    <string name="api_key_tittle">Api Key</string>
+    <string name="api_key_key">api_key_key</string>
+    <string name="api_key_default_value">5TL8PlqCuFnliMfsIlEyDXlz</string>
+    <string name="api_key_summary">设置百度应用的api key，非必要勿改动</string>
+    <string name="shoot_freq_tittle">拍照频率</string>
+    <string name="shoot_freq_key">shoot_freq_key</string>
+    <string name="shoot_freq_default_value">60</string>
+    <string name="shoot_freq_summary">设置相机自动拍照频率</string>
+    <string name="apps_path_tittle">应用保存目录</string>
+    <string name="apps_path_key">apps_path_key</string>
+    <string name="apps_path_default_value">/apps/yqart</string>
+    <string name="apps_path_summary">设置百度应用的保存目录，非必要勿改动</string>
+    <string name="secret_key_tittle">Secret Key</string>
+    <string name="secret_key_key">secret_key_key</string>
+    <string name="secret_key_default_value">wSOkEjPZDGKG1GyLjCd76soBKXqYgIji</string>
+    <string name="secret_key_summary">设置百度应用的secret key，非必要勿改动</string>
+    <string name="access_token_key">access_token_key</string>    
+    <string name="refresh_token_key">refresh_token_key</string>    
+    <string name="net_disk_param">网盘参数</string>    
+    <string name="local_name_tittle">相机位置</string>
+    <string name="local_name_key">local_name_key</string>
+    <string name="local_name_summary">设置相机所在位置名称，用于区别其他相机</string>
+    <string name="local_name_default_value">默认教室</string>
+    <string name="photo_param">相机参数</string>
+    <string name="time_range_begin_set_key">time_range_begin_set_key</string>
+    <string name="time_range_begin_set_tittle">拍照开始时间</string>
+    <string name="time_range_begin_set_summary">设置相机每天开始拍照的时间</string>
+    <string name="time_range_end_set_key">time_range_end_set_key</string>
+    <string name="time_range_end_set_tittle">拍照结束时间</string>
+    <string name="time_range_end_set_summary">设置相机每天结束拍照的时间</string>
+    
+    <string name="net_config_tittle">网络管理地址</string>
+    <string name="net_config_key">net_config_key</string>
+    <string name="net_config_summary">设置相机从网络获取配置的URL</string>
+    <string name="net_config_default_value">http://livepic2.yiqingart.com/query/PHONE_HEARTBEAT.json</string>
+    
+    <string name="phone_id_tittle">手机号</string>
+    <string name="phone_id_key">phone_id_key</string>
+    <string name="phone_id_summary">设置手机号，用于区别其他相机</string>
+    <string name="phone_id_default_value">1</string>
+    
+    <string name="time_range_begin_hour_key">time_range_begin_hour_key</string>
+    <string name="time_range_begin_minute_key">time_range_begin_minute_key</string>
+    <string name="time_range_end_hour_key">time_range_end_hour_key</string>
+    <string name="time_range_end_minute_key">time_range_end_minute_key</string>
+    <string name="net_config_version_key">net_config_version</string>
+    <string name="android_id_key">android_id</string>
+    
+    <string name="checkbox_week_tittle">每周拍照时间</string>
+    <string name="checkbox_week_key">checkbox_week_key</string>    
+    <string name="checkbox_week_summary">设置每周几天拍照</string>
+    <string name="checkbox_week_default_value">true,true,true,true,true,false,false</string>
+    <string name="crash_toast_text">准备重启</string>
+</resources>
