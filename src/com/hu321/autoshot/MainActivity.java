@@ -202,7 +202,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			if( newNetConfigVersion < 1l)
 			{
 				if( newNetConfigVersion == 0l){
+					Log.v("getSettings", "未配置");
 					stop_work();
+				}
+				else{
+					Log.v("getSettings", "获取失败");
 				}
 				if(netConfigVersion == 0l){
 					netConfigVersion++;
@@ -257,7 +261,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			ACRA.getErrorReporter().handleSilentException(e);
+			//ACRA.getErrorReporter().handleSilentException(e);
 			Log.v("getSettings", "error",e);
 		}
 	}
@@ -346,7 +350,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			}
 
 		} catch (Exception e) {
-			ACRA.getErrorReporter().handleSilentException(e);
+			//ACRA.getErrorReporter().handleSilentException(e);
 			Log.v("ConfigRequest", "error:" ,e);
 			return -1;
 		}
@@ -716,88 +720,94 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			final Calendar c = Calendar.getInstance();
 			c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 			int mYear = c.get(Calendar.YEAR); // 获取当前年份
-			int mMonth =c.get(Calendar.MONTH) + 1;// 获取当前月份
+			int mMonth = c.get(Calendar.MONTH) + 1;// 获取当前月份
 			int mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当前月份的日期号码
 			int mHour = c.get(Calendar.HOUR_OF_DAY);
 			int mMinute = c.get(Calendar.MINUTE);
 			int mSecond = c.get(Calendar.SECOND);
-			String target = String.format(
-					"%s/%s/%04d-%02d-%02d/%04d-%02d-%02d-%s-%02d-%02d-%02d.jpg", mbRootPath, localName,
-					mYear, mMonth, mDay, mYear, mMonth, mDay, localName, mHour, mMinute, mSecond);
+			String target = String
+					.format("%s/%s/%04d-%02d-%02d/%04d-%02d-%02d-%s-%02d-%02d-%02d.jpg",
+							mbRootPath, localName, mYear, mMonth, mDay, mYear,
+							mMonth, mDay, localName, mHour, mMinute, mSecond);
+			try {
+				final BaiduPCSActionInfo.PCSFileInfoResponse response = api
+						.uploadFile(fileName, target,
+								new BaiduPCSStatusListener() {
 
-			final BaiduPCSActionInfo.PCSFileInfoResponse response = api
-					.uploadFile(fileName, target, new BaiduPCSStatusListener() {
-
-						@Override
-						public void onProgress(long bytes, long total) {
-							// TODO Auto-generated method stub
-
-							final long bs = bytes;
-							final long tl = total;
-							//sendbytes += bytes;
-
-							mbUiThreadHandler.post(new Runnable() {
-								public void run() {
-//									Toast.makeText(getApplicationContext(),
-//											"total: " + tl + "    sent:" + bs,
-//											Toast.LENGTH_SHORT).show();
-								}
-							});
-						}
-
-						@Override
-						public long progressInterval() {
-							return 1000;
-						}
-					});
-			workCount = 0;
-			mbUiThreadHandler.post(new Runnable() {
-				public void run() {
-					
-					Toast.makeText(
-							getApplicationContext(),
-							"照片上传成功" + response.status.errorCode + "  "
-									+ response.status.message + "  "
-									+ response.commonFileInfo.blockList,
-							Toast.LENGTH_SHORT).show();
-					try {
-						
-						if(0 != response.status.errorCode)
-						{
-							failCount++;
-							if(failCount > 3)
-							{
-								failCount = 0;
-								mWifiAdmin.closeWifi();
-								mbUiThreadHandler.postDelayed(new Runnable() {
 									@Override
-									public void run() {
-										
-										mWifiAdmin.openWifi();
-									}}, 10);
-							}
-						}
-						else
-						{
-							failCount = 0;
-						}
-						File file = new File(fileName);
-						if (file.delete()) {
-							Toast.makeText(getApplicationContext(),
-									"本地照片删除成功！", Toast.LENGTH_LONG).show();
-						} else {
-							Toast.makeText(getApplicationContext(),
-									"本地照片删除失败！", Toast.LENGTH_LONG).show();
-						}
-					} catch (Exception e) {
-						failCount = 0;
-						ACRA.getErrorReporter().handleSilentException(e);
-						Toast.makeText(getApplicationContext(), "发生异常，删除文件失败！",
-								Toast.LENGTH_LONG).show();
-					}
-				}
-			});
+									public void onProgress(long bytes,
+											long total) {
+										// TODO Auto-generated method stub
 
+										final long bs = bytes;
+										final long tl = total;
+										// sendbytes += bytes;
+
+										mbUiThreadHandler.post(new Runnable() {
+											public void run() {
+												// Toast.makeText(getApplicationContext(),
+												// "total: " + tl + "    sent:"
+												// + bs,
+												// Toast.LENGTH_SHORT).show();
+											}
+										});
+									}
+
+									@Override
+									public long progressInterval() {
+										return 1000;
+									}
+								});
+				workCount = 0;
+				mbUiThreadHandler.post(new Runnable() {
+					public void run() {
+
+						Toast.makeText(
+								getApplicationContext(),
+								"照片上传成功" + response.status.errorCode + "  "
+										+ response.status.message + "  "
+										+ response.commonFileInfo.blockList,
+								Toast.LENGTH_SHORT).show();
+						try {
+
+							if (0 != response.status.errorCode) {
+								failCount++;
+								if (failCount > 3) {
+									failCount = 0;
+									mWifiAdmin.closeWifi();
+									mbUiThreadHandler.postDelayed(
+											new Runnable() {
+												@Override
+												public void run() {
+
+													mWifiAdmin.openWifi();
+												}
+											}, 10);
+								}
+							} else {
+								failCount = 0;
+							}
+							File file = new File(fileName);
+							if (file.delete()) {
+								Toast.makeText(getApplicationContext(),
+										"本地照片删除成功！", Toast.LENGTH_LONG).show();
+							} else {
+								Toast.makeText(getApplicationContext(),
+										"本地照片删除失败！", Toast.LENGTH_LONG).show();
+							}
+						} catch (Exception e) {
+							failCount = 0;
+							ACRA.getErrorReporter().handleSilentException(e);
+							Toast.makeText(getApplicationContext(),
+									"发生异常，删除文件失败！", Toast.LENGTH_LONG).show();
+						}
+					}
+				});
+			} catch (Exception e) {
+				ACRA.getErrorReporter().handleSilentException(e);
+				Toast.makeText(getApplicationContext(), "发生异常！",
+						Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
