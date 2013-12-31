@@ -158,7 +158,8 @@ public class Util {
                 byte[] content = query.getBytes(charset);
                 conn.getOutputStream().write(content);
             }
-            
+            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(3000);
             int respCode = conn.getResponseCode();
             if (200 == respCode) {
                 is = conn.getInputStream();
@@ -194,6 +195,8 @@ public class Util {
         HttpURLConnection conn;
         try {
             conn = getURLConnection(url, method, ctype);
+            conn.setConnectTimeout(2000);
+            conn.setReadTimeout(2000);
             out = conn.getOutputStream();
             byte[] entryBoundaryBytes = ("\r\n--" + boundary + "\r\n").getBytes(charset);
             //发�?文本参数
@@ -334,8 +337,6 @@ public class Util {
         } else {
             conn = (HttpURLConnection) urlObj.openConnection();
         }
-        conn.setConnectTimeout(2000);
-        conn.setReadTimeout(2000);
         conn.setRequestMethod(method);
         conn.setDoInput(true);
         conn.setDoOutput(true);
