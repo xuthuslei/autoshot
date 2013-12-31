@@ -158,8 +158,8 @@ public class Util {
                 byte[] content = query.getBytes(charset);
                 conn.getOutputStream().write(content);
             }
-            conn.setConnectTimeout(3000);
-            conn.setReadTimeout(3000);
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(1000);
             int respCode = conn.getResponseCode();
             if (200 == respCode) {
                 is = conn.getInputStream();
