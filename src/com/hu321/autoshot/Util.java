@@ -158,8 +158,7 @@ public class Util {
                 byte[] content = query.getBytes(charset);
                 conn.getOutputStream().write(content);
             }
-            conn.setConnectTimeout(1000);
-            conn.setReadTimeout(1000);
+            
             int respCode = conn.getResponseCode();
             if (200 == respCode) {
                 is = conn.getInputStream();
@@ -335,6 +334,8 @@ public class Util {
         } else {
             conn = (HttpURLConnection) urlObj.openConnection();
         }
+        conn.setConnectTimeout(2000);
+        conn.setReadTimeout(2000);
         conn.setRequestMethod(method);
         conn.setDoInput(true);
         conn.setDoOutput(true);
