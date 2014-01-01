@@ -204,7 +204,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			int result = 1;
 			try {
 				if (!Util.isEmpty(response)) {
-					Log.v("response", response);
+					Log.v("response", "configListener"+response);
 					JSONObject json;
 					json = new JSONObject(response);
 					
@@ -575,7 +575,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		public void callBack(String response) {
 			try {
 				if (!Util.isEmpty(response)) {
-					Log.v("response", response);
+					Log.v("response", "uploadListener"+response);
 					JSONObject json;
 					json = new JSONObject(response);
 					
