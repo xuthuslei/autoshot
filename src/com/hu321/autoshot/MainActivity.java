@@ -101,6 +101,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		mySurfaceHolder.setFormat(PixelFormat.TRANSLUCENT);
 
 		mWifiAdmin = new WifiAdmin(MainActivity.this);
+		mWifiAdmin.createWifiLock();
+		mWifiAdmin.acquireWifiLock();
 //		// login
 //		login.setOnClickListener(new Button.OnClickListener() {
 //			public void onClick(View v) {
@@ -221,19 +223,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 					{
 						result = 1;
 						Log.v("getSettings", "»ñÈ¡Ê§°Ü");
-						failCount++;
-						if (failCount > 3) {
-							failCount = 0;
-							mWifiAdmin.closeWifi();
-							mbUiThreadHandler.postDelayed(
-									new Runnable() {
-										@Override
-										public void run() {
+						
+						mWifiAdmin.closeWifi();
+						mbUiThreadHandler.postDelayed(
+								new Runnable() {
+									@Override
+									public void run() {
 
-											mWifiAdmin.openWifi();
+										mWifiAdmin.openWifi();
+										if(!mWifiAdmin.isHeld()){
+											mWifiAdmin.acquireWifiLock();
 										}
-									}, 10);
-						}
+									}
+								}, 5000);
 					}
 					if( result !=0 )
 					{

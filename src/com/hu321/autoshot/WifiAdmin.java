@@ -45,16 +45,19 @@ public class WifiAdmin {
 	public void acquireWifiLock(){
 		mWifiLock.acquire();
 	}
+	public boolean isHeld(){
+		return mWifiLock.isHeld();
+	}
 	//解锁wifiLock
 	public void releaseWifiLock(){
 		//判断是否锁定
 		if(mWifiLock.isHeld()){
-			mWifiLock.acquire();
+			mWifiLock.release();
 		}
 	}
 	//创建一个wifiLock
 	public void createWifiLock(){
-		mWifiLock=mWifiManager.createWifiLock("test");
+		mWifiLock=mWifiManager.createWifiLock(3,"test");
 	}
 	//得到配置好的网络
 	public List<WifiConfiguration> getConfiguration(){
