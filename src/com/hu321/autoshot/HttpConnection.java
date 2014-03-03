@@ -100,7 +100,7 @@ public class HttpConnection implements Runnable {
 				count++;
 				if(count >10)
 				{
-					ACRA.getErrorReporter().handleSilentException(e);
+					//ACRA.getErrorReporter().handleSilentException(e);
 					this.sendMessage("{\"fail\":0}");
 					break;
 				}

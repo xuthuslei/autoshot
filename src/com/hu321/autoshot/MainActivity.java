@@ -1,5 +1,6 @@
 package com.hu321.autoshot;
 
+import java.io.DataOutputStream;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -67,6 +68,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	SurfaceView mySurfaceView = null;
 	SurfaceHolder mySurfaceHolder = null;
 	
+	private Long startTime = 0l;
 	private WifiAdmin mWifiAdmin;   
 
 	Camera myCamera = null;
@@ -146,14 +148,63 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
 		mbUiThreadHandler.postDelayed(mUpdateConfig, 10);
 		//getSettings();
-		try{
-			throw new Exception("i am running");
-		} catch (Exception e) {
-			ACRA.getErrorReporter().handleSilentException(e);
-		}
+		startTime = System.currentTimeMillis();
+		RootCommand("ls");
 
 	}
 
+	/**
+     * 应用程序运行命令获取 Root权限，设备必须已破解(获得ROOT权限)
+     * @param command 命令：String apkRoot="chmod 777 "+getPackageCodePath(); RootCommand(apkRoot);
+     * @return 应用程序是/否获取Root权限
+     */
+    private boolean RootCommand(String command)
+    {
+        Process process = null;
+        DataOutputStream os = null;
+        try
+        {
+            process = Runtime.getRuntime().exec("su");
+            os = new DataOutputStream(process.getOutputStream());
+            os.writeBytes(command + "\n");
+            os.writeBytes("exit\n");
+            os.flush();
+            process.waitFor();
+        } catch (Exception e)
+        {
+            Log.d("*** DEBUG ***", "ROOT REE" + e.getMessage());
+            return false;
+        } finally
+        {
+            try
+            {
+                if (os != null)
+                {
+                    os.close();
+                }
+                process.destroy();
+            } catch (Exception e)
+            {
+            }
+        }
+        Log.d("*** DEBUG ***", "Root SUC ");
+        return true;
+    }
+	private void check_and_reboot_sys() {
+		final Calendar c = Calendar.getInstance();
+		c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
+		int mHour = c.get(Calendar.HOUR_OF_DAY);
+		//int mMinute = c.get(Calendar.MINUTE);
+		
+		long runtime = System.currentTimeMillis() - startTime;
+		
+		Log.v("reboot", "mHour:"+mHour+" runtime:"+runtime);
+
+		if ((mHour == 0) && (runtime > 7200000 )) {
+			RootCommand("reboot");
+		}
+	}
 	private void getSettings() {
 		
 		try {
@@ -526,6 +577,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	private Runnable mRunnable = new Runnable() {
 		@Override
 		public void run() {
+			check_and_reboot_sys();
 			if (isWorking) {
 				Log.v("mRunnable", "run");
 				mbUiThreadHandler.postDelayed(this, shotFreq);
