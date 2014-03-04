@@ -100,6 +100,7 @@ public class WifiAdmin {
 		return (mWifiInfo==null)?"NULL":mWifiInfo.getBSSID();
 	}
 	public int getIpAddress(){
+		mWifiInfo=mWifiManager.getConnectionInfo();
 		return (mWifiInfo==null)?0:mWifiInfo.getIpAddress();
 	}
 	//得到连接的ID

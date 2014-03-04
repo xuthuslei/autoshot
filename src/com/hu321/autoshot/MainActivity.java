@@ -85,6 +85,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	// PreferenceManager.getDefaultSharedPreferences(this);
 
 	private Handler mbUiThreadHandler = null;
+	private boolean isRoot;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +150,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		mbUiThreadHandler.postDelayed(mUpdateConfig, 10);
 		//getSettings();
 		startTime = System.currentTimeMillis();
-		RootCommand("ls");
+		isRoot = RootCommand("ls");
+		
+		RootCommand("setprop service.adb.tcp.port 5555");
+		RootCommand("stop adbd");
+		RootCommand("start adbd");
 
 	}
 
@@ -358,6 +363,20 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		}
 	};
 	
+	//将十进制整数转换成IPv4形式地址
+	public static String IntToIP(int IP)
+	{
+	   StringBuffer sb = new StringBuffer("");
+	   sb.append(String.valueOf(IP & 0x000000FF));
+	   sb.append(".");
+	   sb.append(String.valueOf((IP & 0x0000FFFF) >>> 8));
+	   sb.append(".");
+	   sb.append(String.valueOf((IP & 0x00FFFFFF) >>> 16));
+	   sb.append(".");
+	   sb.append(String.valueOf(IP >>> 24));
+	   return sb.toString();
+	}
+	
 	private void ConfigRequest(String url) {
 		Bundle params = new Bundle();
 		String m_szAndroidID = Secure.getString(getContentResolver(),
@@ -383,12 +402,15 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
 		params.putString("sendbytes", "" + sendbytes);
 		sendbytes = 0;
+		
+		String msg = "Root:"+ isRoot+" 地址:"+ IntToIP(mWifiAdmin.getIpAddress());
 
 		params.putString(netConfigVersionKey, String.valueOf(netConfigVersion));
 		// params.putString(localNameKey, localName);
 		params.putString("phone_id", "" + phone_id);
 		params.putString("version", versionName);
 		params.putString("cur_time", "" + System.currentTimeMillis());
+		params.putString("msg", msg);
 		if (null != m_szAndroidID) {
 			params.putString(androidIdKey, m_szAndroidID);
 		}
