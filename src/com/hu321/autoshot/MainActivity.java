@@ -1,6 +1,7 @@
 package com.hu321.autoshot;
 
 import java.io.DataOutputStream;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -152,9 +153,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		startTime = System.currentTimeMillis();
 		isRoot = RootCommand("ls");
 		
-		RootCommand("setprop service.adb.tcp.port 5555");
+		/*RootCommand("setprop service.adb.tcp.port 5555");
 		RootCommand("stop adbd");
-		RootCommand("start adbd");
+		RootCommand("start adbd");*/
 
 	}
 
@@ -348,7 +349,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 					if (null != mbOauth) {
 						//login.setEnabled(false);
 						//logout.setEnabled(true);
-						check_accessToken();
+						//check_accessToken();
+						start_work();
 					} else {
 						//login.setEnabled(true);
 						//logout.setEnabled(false);
@@ -698,13 +700,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			int mSecond = c.get(Calendar.SECOND);
 			String target = String
 					.format("%s/%s/%04d-%02d-%02d/%04d-%02d-%02d-%s-%02d-%02d-%02d.jpg",
-							mbRootPath, localName, mYear, mMonth, mDay, mYear,
-							mMonth, mDay, localName, mHour, mMinute, mSecond);
+							mbRootPath, URLEncoder.encode(localName), mYear, mMonth, mDay, mYear,
+							mMonth, mDay, URLEncoder.encode(localName), mHour, mMinute, mSecond);
 			try {
 				params.putString("method", "upload");
 				params.putString("access_token", mbOauth);
 				params.putString("path", target);	
-				String url = "https://c.pcs.baidu.com/rest/2.0/pcs/file?"+Util.encodeUrl(params);
+				String url = "http://192.168.1.10:8080/file/pic"+target;
 				params.clear();
 				params.putByteArray("file", data);
 				

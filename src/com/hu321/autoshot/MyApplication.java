@@ -7,7 +7,7 @@ import com.github.anrwatchdog.ANRWatchDog;
 
 import android.app.Application;
 @ReportsCrashes(formKey = "", // will not be used
-formUri = "http://yqartpic.duapp.com/acra/submit",
+formUri = "http://yiqingart.duapp.com/acra/submit",
 customReportContent = { ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME, ReportField.ANDROID_VERSION, ReportField.STACK_TRACE, ReportField.SHARED_PREFERENCES, ReportField.USER_APP_START_DATE, ReportField.USER_CRASH_DATE},  
 mode = ReportingInteractionMode.TOAST,
 resToastText = R.string.crash_toast_text)

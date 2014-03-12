@@ -39,7 +39,7 @@
     <string name="net_config_tittle">网络管理地址</string>
     <string name="net_config_key">net_config_key</string>
     <string name="net_config_summary">设置相机从网络获取配置的URL</string>
-    <string name="net_config_default_value">http://yqartpic.duapp.com/query/PHONE_HEARTBEAT.json</string>
+    <string name="net_config_default_value">http://yiqingart.duapp.com/query/PHONE_HEARTBEAT.json</string>
     
     <string name="phone_id_tittle">手机号</string>
     <string name="phone_id_key">phone_id_key</string>
