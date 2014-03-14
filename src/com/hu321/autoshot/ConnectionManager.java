@@ -7,7 +7,7 @@ import android.util.Log;
 public class ConnectionManager {
 	
 	public static final int MAX_CONNECTIONS = 5;
-	public static final int MAX_QUEUE = 10;
+	public static final int MAX_QUEUE = 5;
 
 	private ArrayList<HttpConnection> active = new ArrayList<HttpConnection>();
 	private ArrayList<HttpConnection> queue = new ArrayList<HttpConnection>();
@@ -21,7 +21,10 @@ public class ConnectionManager {
 	}
 
 	public void push(HttpConnection runnable) {
-		queue.add(runnable);
+		if(queue.size() < MAX_QUEUE){
+			queue.add(runnable);
+		}
+		
 		if (active.size() < MAX_CONNECTIONS)
 		{
 			startNext();

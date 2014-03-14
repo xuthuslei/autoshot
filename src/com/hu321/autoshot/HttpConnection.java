@@ -23,15 +23,17 @@ public class HttpConnection implements Runnable {
 	private String method;
 	private String url;
 	private int operate;
+	private int trynum;
 	private Bundle params;
 	private CallbackListener listener;
 	
-	public void create(int operate, String url, String method, Bundle params, CallbackListener listener) {
+	public void create(int operate, String url, String method, Bundle params, CallbackListener listener, int trynum) {
 		this.operate = operate;
 		this.method = method;
 		this.url = url;
 		this.params = params;
 		this.listener = listener;
+		this.trynum = trynum;
 		ConnectionManager.getInstance().push(this);
 	}
 	
@@ -39,10 +41,10 @@ public class HttpConnection implements Runnable {
 		public void callBack(String result);
 	}
 	public void openUrl(String url, String method, Bundle params, CallbackListener listener) {
-		create(OPEN_URL, url, method, params, listener);
+		create(OPEN_URL, url, method, params, listener, 5);
 	}
 	public void uploadFile(String url, Bundle params, CallbackListener listener) {
-		create(UPLOAD_FILE, url, null, params, listener);
+		create(UPLOAD_FILE, url, null, params, listener, 2);
 	}
 	
 	public void start() {
@@ -98,7 +100,7 @@ public class HttpConnection implements Runnable {
 				break;
 			} catch (Exception e) {
 				count++;
-				if(count >10)
+				if(count >this.trynum)
 				{
 					//ACRA.getErrorReporter().handleSilentException(e);
 					this.sendMessage("{\"fail\":0}");

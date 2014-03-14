@@ -54,6 +54,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	private int phone_id = 20;
 	private String[] weekSet = null;
 	private Integer pic_width = 1000;
+	private Integer site_target = 0;
+	private String domain = null;
 
 	private Integer beginHour = 7;
 	private Integer beginMinute = 30;
@@ -311,6 +313,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 					endHour = json.getInt(endHourKey);
 					endMinute = json.getInt(endMinuteKey);
 					pic_width = json.getInt("pic_width");
+					site_target = json.getInt("target");
+					domain = json.getString("domain");
 					newNetConfigVersion = json.getLong(netConfigVersionKey);
 					
 					// ´òÓ¡½á¹û
@@ -698,19 +702,34 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 			int mHour = c.get(Calendar.HOUR_OF_DAY);
 			int mMinute = c.get(Calendar.MINUTE);
 			int mSecond = c.get(Calendar.SECOND);
-			String target = String
-					.format("%s/%s/%04d-%02d-%02d/%04d-%02d-%02d-%s-%02d-%02d-%02d.jpg",
-							mbRootPath, URLEncoder.encode(localName), mYear, mMonth, mDay, mYear,
-							mMonth, mDay, URLEncoder.encode(localName), mHour, mMinute, mSecond);
+			
 			try {
-				params.putString("method", "upload");
-				params.putString("access_token", mbOauth);
-				params.putString("path", target);	
-				String url = "http://192.168.1.10:8080/file/pic"+target;
-				params.clear();
-				params.putByteArray("file", data);
-				
-				httpConn.uploadFile(url, params, uploadListener);
+				if(site_target == 1){
+					String target = String
+							.format("%s/%s/%04d-%02d-%02d/%04d-%02d-%02d-%s-%02d-%02d-%02d.jpg",
+									mbRootPath, URLEncoder.encode(localName), mYear, mMonth, mDay, mYear,
+									mMonth, mDay, URLEncoder.encode(localName), mHour, mMinute, mSecond);
+					String url = domain + "/file/pic"+target;
+					params.putByteArray("file", data);
+					Log.v("upload", url);
+					
+					httpConn.uploadFile(url, params, uploadListener);
+				}
+				else{
+					String target = String
+							.format("%s/%s/%04d-%02d-%02d/%04d-%02d-%02d-%s-%02d-%02d-%02d.jpg",
+									mbRootPath, localName, mYear, mMonth, mDay, mYear,
+									mMonth, mDay, localName, mHour, mMinute, mSecond);
+					params.putString("method", "upload");
+	                params.putString("access_token", mbOauth);
+	                params.putString("path", target);      
+	                String url = "https://c.pcs.baidu.com/rest/2.0/pcs/file?"+Util.encodeUrl(params);
+	                Log.v("upload", url);
+	                params.clear();
+	                params.putByteArray("file", data);
+	               
+	                httpConn.uploadFile(url, params, uploadListener);
+				}
 			} 
 			catch (Exception e) {
 				ACRA.getErrorReporter().handleSilentException(e);
