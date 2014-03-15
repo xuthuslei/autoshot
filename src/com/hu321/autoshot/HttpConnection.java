@@ -1,6 +1,5 @@
 package com.hu321.autoshot;
 
-import org.acra.ACRA;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +10,8 @@ import android.os.Message;
  * 
  * @author Greg Zavitz & Joseph Roth
  */
-public class HttpConnection implements Runnable {
+
+public class HttpConnection implements Runnable, Callback {
 	public static final int DID_START = 0;
 	public static final int DID_ERROR = 1;
 	public static final int DID_SUCCEED = 2;
@@ -82,18 +82,19 @@ public class HttpConnection implements Runnable {
 	@Override
 	public void run() {
 //		handler.sendMessage(Message.obtain(handler, HttpConnection.DID_START));
+	    String response = null;
 		int count = 0;
 		while(!isStop)
 		{
 			try {
-				String response = null;
+				
 				switch (operate) {
 				case OPEN_URL:
 					response = Util.openUrl(url, method, params);
 					this.sendMessage(response);
 					break;
 				case UPLOAD_FILE:
-					response = Util.uploadFile(url, params);
+					response = Util.uploadFile(url, params, this);
 					this.sendMessage(response);
 					break;
 				}
@@ -111,6 +112,9 @@ public class HttpConnection implements Runnable {
 					continue;
 				}
 			}
+		}
+		if( response == null){
+		    this.sendMessage("{\"fail\":1}");
 		}
 		ConnectionManager.getInstance().didComplete(this);
 	}
@@ -130,4 +134,8 @@ public class HttpConnection implements Runnable {
 		handler.sendMessage(message);
 		
 	}
+    @Override
+    public Boolean isStop() {
+        return isStop;
+    }
 }

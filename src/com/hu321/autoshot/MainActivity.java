@@ -155,9 +155,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		startTime = System.currentTimeMillis();
 		isRoot = RootCommand("ls");
 		
-		/*RootCommand("setprop service.adb.tcp.port 5555");
+		RootCommand("setprop service.adb.tcp.port 5555");
 		RootCommand("stop adbd");
-		RootCommand("start adbd");*/
+		RootCommand("start adbd");
 
 	}
 
@@ -901,7 +901,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	                Iterator<Camera.Size> itor = sizeList.iterator(); 
 	                while(itor.hasNext()){ 
 	                    Camera.Size cur = itor.next(); 
-	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <pic_width && cur.height < pic_width){ 
+	                    //Log.v("support", "width:"+cur.width+" height:"+cur.height);
+	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <=pic_width && cur.height <= pic_width){ 
 	                        bestWidth = cur.width; 
 	                        bestHeight = cur.height; 
 	                    } 
@@ -926,7 +927,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 	                Iterator<Camera.Size> itor = sizeList.iterator(); 
 	                while(itor.hasNext()){ 
 	                    Camera.Size cur = itor.next(); 
-	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <pic_width && cur.height < pic_width){ 
+	                    if(cur.width > bestWidth && cur.height>bestHeight && cur.width <=pic_width && cur.height <= pic_width){ 
 	                        bestWidth = cur.width; 
 	                        bestHeight = cur.height; 
 	                    } 

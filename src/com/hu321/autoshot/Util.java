@@ -184,7 +184,7 @@ public class Util {
      * @return 返回 json格式的响应字符串
      * @throws IOException 当网络发生异常时抛出该异�?
      */
-    public static String uploadFile(String url, Bundle parameters) throws IOException {
+    public static String uploadFile(String url, Bundle parameters, Callback cb) throws IOException {
         String charset = "UTF-8";
         String boundary = System.currentTimeMillis() + "";
         String ctype = "multipart/form-data;charset=" + charset + ";boundary=" + boundary;
@@ -213,8 +213,14 @@ public class Util {
                     }
                     String value = (String) paramValue;
                     byte[] textParameters = getTextParameters(key, value, charset);
-                    out.write(entryBoundaryBytes);
                     out.write(textParameters);
+                    for(int i = 0; i < entryBoundaryBytes.length; i+=1024){
+                        out.write(textParameters, i, textParameters.length - i > 1024 ?1024:textParameters.length - i);
+                        if(cb.isStop()){
+                            return "{\"fail\":1}";
+                        }
+                    }
+                    
                 }
             }
 
