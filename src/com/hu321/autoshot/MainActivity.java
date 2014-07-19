@@ -109,6 +109,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 		mWifiAdmin = new WifiAdmin(MainActivity.this);
 		mWifiAdmin.createWifiLock();
 		mWifiAdmin.acquireWifiLock();
+		mWifiAdmin.openWifi();
 //		// login
 //		login.setOnClickListener(new Button.OnClickListener() {
 //			public void onClick(View v) {
@@ -281,20 +282,29 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 					else
 					{
 						result = 1;
+						failCount++;
 						Log.v("getSettings", "»ñÈ¡Ê§°Ü");
 						
-						mWifiAdmin.closeWifi();
-						mbUiThreadHandler.postDelayed(
-								new Runnable() {
-									@Override
-									public void run() {
-
-										mWifiAdmin.openWifi();
-										if(!mWifiAdmin.isHeld()){
-											mWifiAdmin.acquireWifiLock();
-										}
-									}
-								}, 5000);
+						if(failCount >= 6){
+						    RootCommand("reboot");
+						    failCount = 0;
+						    return;
+						}
+						else if(failCount >= 2){
+    						mWifiAdmin.closeWifi();
+    						mbUiThreadHandler.postDelayed(
+    								new Runnable() {
+    									@Override
+    									public void run() {
+    
+    										mWifiAdmin.openWifi();
+    										mWifiAdmin.startScan();
+    										if(!mWifiAdmin.isHeld()){
+    											mWifiAdmin.acquireWifiLock();
+    										}
+    									}
+    								}, 5000);
+						}
 					}
 					if( result !=0 )
 					{
